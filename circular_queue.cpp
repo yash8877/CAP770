@@ -1,76 +1,87 @@
 #include <iostream>
 #define size 20
 using namespace std;
-int que[size];
-int rear = -1, front = -1;
-
+int cir_que[size];
+int front = -1;
+int rear = -1;
 void enqueue(int val)
 {
-    if (rear == size - 1)
+    if ((front == 0 && rear == size - 1) || (rear == (front - 1) % (size - 1)))
     {
-        cout << "# Overflow" << endl;
+        cout << "Overflow";
     }
-    rear += 1;
-    que[rear] = val;
-    cout << "# Inserted Successfully!!" << endl;
-    if (front == -1)
+    else if (front == -1)
     {
-        front++;
+        front = rear = 0;
     }
-}
-
-void dequeue()
-{
-    if (front == -1 || front > rear)
+    else if (rear == size - 1 && front != 0)
     {
-        cout << "# Underflow" << endl;
+        rear = 0;
     }
     else
     {
-        cout << "# The value deleted is: " << que[front] << endl;
+        rear++;
+    }
+    cir_que[rear] = val;
+    cout << "Inserted Successfully!!!" << endl;
+}
+void dequeue()
+{
+    if (front == -1)
+    {
+        cout << "Underflow" << endl;
+    }
+    else if (front == rear)
+    {
+        front = rear = -1;
+    }
+    else if (front == size - 1)
+    {
+        front = 0;
+    }
+    else
+    {
         front++;
-        cout << "# Deleted Successfully!!";
+        cout << "Deleted Successfully!!" << endl;
+    }
+}
+void display()
+{
+    if (front == -1)
+    {
+        cout << "No element found!!" << endl;
+    }
+    else
+    {
+        cout << "The circular queue: ";
+        for (int i = front; i <= rear; i++)
+        {
+            cout << cir_que[i] << " ";
+        }
         cout << "\n";
     }
 }
+
 void peek()
 {
-    if (front == -1 || front > rear)
+    if (front == -1)
     {
-        cout << "# No element found" << endl;
+        cout << "No element found!!" << endl;
     }
     else
     {
-        cout << que[front] << " is on the peek" << endl;
+        cout << cir_que[front] << " is on the peek" << endl;
     }
 }
-
 string isEmpty()
 {
-    if (front == -1 || front > rear)
+    if (front == -1 && rear == -1)
     {
         return "> YES";
     }
     else
     {
         return "> NO";
-    }
-}
-
-void display()
-{
-    if (front == -1 || front > rear)
-    {
-        cout << "No element found!!" << endl;
-    }
-    else
-    {
-        cout<<"The queue: ";
-        for (int i = front; i <= rear; i++)
-        {
-            cout << que[i] << " ";
-        }
-        cout << "\n";
     }
 }
 
